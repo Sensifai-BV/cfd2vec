@@ -1,0 +1,26 @@
+# CFD2vec-S (~30 M parameters). Recommended main model while the pretraining pool is below ~10 k cases;
+# larger widths risk memorisation at that data scale.
+name: cfd2vec-S
+d_model: 512
+n_layers: 8
+n_heads: 8
+mlp_ratio: 4
+dropout: 0.0
+tokenizer:
+  n_tokens_scale1: 8192     # wall-distance-weighted FPS
+  n_tokens_scale2: 4096     # uniform FPS
+  r1: 0.05                  # x L_ref
+  r2: 0.25                  # x L_ref
+  k_neighbors: 256
+  pointnet_hidden: [128, 256]
+decoder:
+  n_cross_layers: 2
+  mlp_ratio: 4
+cond:
+  closure_dropout: 0.3
+rope:
+  min_wavelength: 0.02      # x L_ref
+  max_wavelength: 50.0
+data:
+  n_context: 1048576
+  n_query: 16384
