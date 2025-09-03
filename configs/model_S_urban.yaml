@@ -1,0 +1,30 @@
+# CFD2vec-S weights (d 512, 8 layers, 32.5 M parameters) with token counts matched to the urban shards.
+# Parameter count depends only on widths, so these weights load into model_S.yaml unchanged; token counts follow the
+# number of points per case (~46 k context points here versus ~1 M for large external cases).
+name: cfd2vec-S-urban
+d_model: 512
+n_layers: 8
+n_heads: 8
+mlp_ratio: 4
+dropout: 0.0
+tokenizer:
+  n_tokens_scale1: 2048
+  n_tokens_scale2: 1024
+  r1: 0.05
+  r2: 0.25
+  k_neighbors: 48
+  pointnet_hidden: [128, 256]
+decoder:
+  n_cross_layers: 2
+  mlp_ratio: 4
+cond:
+  closure_dropout: 0.3
+rope:
+  min_wavelength: 0.02
+  max_wavelength: 50.0
+data:
+  n_context: 32768
+  n_query: 8192
+memory:
+  grad_checkpoint: false       # on: ~30 % slower, about 1/3 of the activation memory
+  decode_chunk: 2048
