@@ -1,0 +1,26 @@
+# Pilot config: same architecture as S with smaller widths and token counts, recommended for fast
+# pipeline checks and ablation smoke runs.
+name: cfd2vec-pilot
+d_model: 256
+n_layers: 6
+n_heads: 8
+mlp_ratio: 4
+dropout: 0.0
+tokenizer:
+  n_tokens_scale1: 512
+  n_tokens_scale2: 256
+  r1: 0.05
+  r2: 0.25
+  k_neighbors: 32
+  pointnet_hidden: [64, 128]
+decoder:
+  n_cross_layers: 2
+  mlp_ratio: 4
+cond:
+  closure_dropout: 0.3
+rope:
+  min_wavelength: 0.02
+  max_wavelength: 50.0
+data:
+  n_context: 16384
+  n_query: 4096
