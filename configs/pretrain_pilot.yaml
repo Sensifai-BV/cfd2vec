@@ -1,0 +1,21 @@
+model: configs/model_pilot.yaml
+shards: ${CFD2VEC_DATA}/cfd2vec_shards
+channel_stats: configs/channel_stats.json
+sources: [aero_urban]
+mask:
+  ratios: [0.6, 0.9, 1.0]
+  probs: [0.5, 0.25, 0.25]
+  modes: [tokens, near_wall, wake, boxes]
+  mode_probs: [0.4, 0.2, 0.2, 0.2]
+optim:
+  lr: 3.0e-4
+  weight_decay: 0.05
+  warmup_steps: 200
+  grad_clip_norm: 1.0
+batch_size: 8
+max_steps: 2400
+max_minutes: 150
+eval_every: 400
+eval_cases: 12
+num_workers: 3
+seed: 0
