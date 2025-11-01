@@ -1,0 +1,13 @@
+# Source conventions for drivaerml. Ingestion refuses to run while any entry is missing or marked VERIFY.
+# Recommended: resolve each entry from the dataset card and one inspected run, convert that run, check it against
+# the published integral values, then record the run in verified_run.
+source: drivaerml
+solid_mask: VERIFY      # none, or {field: <cell-data name>, solid_value: <value marking solid cells>}
+stress_order: VERIFY    # vtk (XX YY ZZ XY YZ XZ), foam (XX XY XZ YY YZ ZZ), or none
+pressure: {convention: VERIFY}   # kinematic (p / rho), or {convention: static, rho: <kg/m3>, p_ref: <Pa>}
+inflow_dir: [VERIFY, VERIFY, VERIFY]
+L_ref: {rule: VERIFY}      # x-extent, or {value: <length>}
+origin: {rule: VERIFY}     # bbox-centre-ground, or {point: [x, y, z]}
+ground_z: VERIFY           # ground-plane height in source units, or none
+licence: CC-BY-SA-4.0
+verified_run: VERIFY       # run id converted and checked by hand
