@@ -1,0 +1,14 @@
+# Data-source registry. Licence, role and split policy per source are recorded in the manifest from here.
+# Recommended: fill `licence` from each dataset card before any release, and keep held-out targets out of pretraining.
+aero_urban:
+  module: cfd2vec.sources.aero_urban
+  root: ${CFD2VEC_DATA}/aero_corpus_cache        # CFD2VEC_DATA defaults to ~/External/Datasets/cfd (cfd2vec.paths)
+  bench_root: ${CFD2VEC_DATA}/aero_bench
+  licence: CC-BY-4.0
+  role: pretrain
+  split: configs/splits.json
+ahmedml:     {module: cfd2vec.sources.caeml, licence: CC-BY-SA-4.0, role: pretrain, split: official}
+drivaerml:   {module: cfd2vec.sources.caeml, licence: CC-BY-SA-4.0, role: pretrain, split: official, max_cases: 200}
+drivaernetpp: {module: cfd2vec.sources.caeml, licence: VERIFY, role: pretrain, split: official}
+windsorml:   {module: cfd2vec.sources.caeml, licence: CC-BY-SA-4.0, role: heldout-T1, split: official}
+hiliftaeroml: {module: cfd2vec.sources.caeml, licence: VERIFY, role: heldout-T5, split: official}
