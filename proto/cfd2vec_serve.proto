@@ -1,0 +1,26 @@
+// CFD2vec inference service: a solver-side client sends a case, the server returns initial fields.
+//
+// Both directions carry one logical frame split into Chunk messages (gRPC keeps messages small; a
+// 1 M-cell mesh is about 100 MB). A frame is
+//     uint64 little-endian header length | UTF-8 JSON header | payload bytes
+// Request payload: an uncompressed POSIX tar of the case (constant/, system/, 0/ templates; optional
+// prior/ holding a low-fidelity solution with its latest time directory).
+// Response payload: an uncompressed tar of the written <time>/<field> files.
+// The JSON headers are documented in cfd2vec/serve/wire.py.
+//
+// Chunk has a single bytes field, so clients without generated stubs can encode it directly
+// (tag 0x0A, varint length, data); cfd2vec/serve/wire.py does this.
+syntax = "proto3";
+
+package cfd2vec.serve.v1;
+
+message Chunk {
+  bytes data = 1;
+}
+
+service Predictor {
+  // Client-streaming case upload, server-streaming field download.
+  rpc Predict(stream Chunk) returns (stream Chunk);
+  // Empty frame in, JSON frame out: model identity, device, warm-up state.
+  rpc Health(Chunk) returns (Chunk);
+}
