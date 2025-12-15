@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cfd2vec"
+version = "0.1.0.dev0"
+description = "CFD2vec: a self-supervised, mesh-agnostic pretrained representation of 3-D steady / time-averaged flows"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24", "scipy>=1.10", "torch>=2.2", "pyyaml>=6", "pandas>=2", "pyarrow>=14"]
+
+[project.optional-dependencies]
+openfoam = ["foamlib>=0.9", "pyvista>=0.43"]
+vtk = ["pyvista>=0.43"]
+serve = ["grpcio>=1.60", "foamlib>=0.9", "pyvista>=0.43"]
+dev = ["pytest>=7", "matplotlib>=3.7"]
+
+[project.scripts]
+cfd2vec = "cfd2vec.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+cfd2vec = ["protocols/*.yaml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
