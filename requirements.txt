@@ -1,0 +1,18 @@
+# CFD2vec Python dependencies (pip format).
+#   conda create -n cfd2vec python=3.12 -y && conda activate cfd2vec
+#   pip install -r requirements.txt
+#   pip install -e . --no-deps
+#   cfd2vec device-check
+torch>=2.5
+numpy>=1.26
+scipy>=1.11
+pandas>=2.1
+pyarrow>=14
+pyyaml>=6
+matplotlib>=3.8
+pytest>=7
+foamlib>=1.8
+pyvista>=0.44
+onnx>=1.16
+onnxruntime>=1.18
+grpcio>=1.60          # cfd2vec serve (gRPC inference service)
