@@ -1,0 +1,27 @@
+# Solver warm-start benchmark protocol (X5). Version 1, frozen 2026-09-28, before any X5 run.
+# Every arm runs the unchanged solver on the same mesh, schemes and linear solvers. Recommended: run arms serially
+# on an otherwise idle machine with identical decomposition, so wall-clock times are comparable.
+version: 1
+solver: "foamRun (incompressibleFluid), stock"
+max_iterations: 1500            # fixed budget per arm; the solver's own residualControl stop is disabled
+convergence:
+  residual_fields: [p, Ux, Uy, Uz, k, epsilon]
+  residual_tol: 1.0e-3          # initial (normalised) residual of every listed field
+  integral_quantities: [drag, pedestrian_speed]
+  stationarity_window: 200      # iterations
+  stationarity_rel: 0.01        # each quantity stays within 1 % of its value at the convergence iteration
+  definition: >-
+    first iteration i at which every residual is <= residual_tol and, for every integral quantity q,
+    max over j in [i, i + window] of |q_j - q_i| <= rel * |q_i|
+monitors:
+  drag: "x-force on all wall patches except the ground (forces function object)"
+  pedestrian_speed: "mean |U| over 64 fixed cell centres near z = 0.1 H in the streets (probes function object)"
+safety_probe: disabled          # deployment feature; off for every benchmark arm so all arms count iterations alike
+arms:
+  - {name: cold,              init: "stock 0/ fields"}
+  - {name: potentialFoam,     init: "potentialFoam -writep", preprocess_charged: true}
+  - {name: mapFields_U,       init: "coarse twin U mapped to the fine mesh", preprocess_charged: true, coarse_solve_charged: true}
+  - {name: cfd2vec_U,         init: "CFD2vec U", inference_charged: true}
+  - {name: cfd2vec_Up,        init: "CFD2vec U, p", inference_charged: true}
+  - {name: cfd2vec_Upkeps,    init: "CFD2vec U, p, k, epsilon with positivity clamps", inference_charged: true}
+success: ">= 15 % fewer iterations to the criterion than mapFields_U (urban) / potentialFoam (real-city), and positive end-to-end wall clock"
