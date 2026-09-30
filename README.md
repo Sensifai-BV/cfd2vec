@@ -35,6 +35,8 @@ per scale on the training shards (next to the nominal radii r1, r2).
 
 ## Quick start
 
+Pre-trained model: [CFD2vec-31M on Hugging Face](https://huggingface.co/sensifai/cfd2vec)
+
 ```python
 from cfd2vec import CFD2vec, Conditioning
 from cfd2vec.solvers import get_adapter
